@@ -25,7 +25,12 @@ class MessageRecord extends Translations {
       "chat_other_reset_setting": "重置配置",
       "chat_other_clear_history": "清空对话",
       "chat_page_title": "聊天对话",
-      "chat_page_input_hint": "请输入内容以发起对话"
+      "chat_page_input_hint": "请输入内容以发起对话",
+      "chat_page_home_center_title": "有什么我可以帮助到你的吗？",
+      "chat_page_home_tip_history_title": "了解历史人物",
+      "chat_page_home_tip_history_content": "请向我讲述下马克思的一生及其作品",
+      "chat_page_home_tip_tour_title": "提供旅行计划",
+      "chat_page_home_tip_tour_content": "请给我一些关于拉萨旅行的计划"
     },
     'en_US': {
       "title": "Chat All",
@@ -48,7 +53,12 @@ class MessageRecord extends Translations {
       "chat_other_reset_setting": "Reset Settings",
       "chat_other_clear_history": "Clear History",
       "chat_page_title": "Chat Conversation",
-      "chat_page_input_hint": "Please enter to start a conversation"
+      "chat_page_input_hint": "Please enter to start a conversation",
+      "chat_page_home_center_title": "How can I help you today?",
+      "chat_page_home_tip_history_title": "Learn about historical figures",
+      "chat_page_home_tip_history_content": "Please tell me about Marx’s life and works.",
+      "chat_page_home_tip_tour_title": "Provide travel plans",
+      "chat_page_home_tip_tour_content": "Please give me some travel plans about Lhasa"
     }
   };
 

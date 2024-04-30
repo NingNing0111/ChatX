@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:chat_all/component/chat_home.dart';
 import 'package:chat_all/component/md_code_highlight_math.dart';
 import 'package:chat_all/controller/chat.dart';
 import 'package:chat_all/model/message.dart';
@@ -43,9 +44,6 @@ class _ChatPageState extends State<ChatPage> {
             builder: (context) {
               return IconButton(
                   onPressed: () {
-                    AdaptiveTheme.of(context).brightness == Brightness.dark
-                        ? AdaptiveTheme.of(context).setLight()
-                        : AdaptiveTheme.of(context).setDark();
                     Scaffold.of(context).openDrawer();
                   },
                   icon: const Icon(
@@ -57,57 +55,62 @@ class _ChatPageState extends State<ChatPage> {
         ),
         drawer: const SidebarPage(),
         body: GetBuilder<ChatPageController>(
-          builder: (context) => ListView.builder(
-              itemCount: _chatController.messages.length,
-              itemBuilder: (context, index) {
-                final currMessage = _chatController.messages[index];
-                return Column(
-                  crossAxisAlignment:
-                      OpenAIChatMessageRole.user == currMessage.role
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment:
+          builder: (context) => _chatController.historyMessages.messages.isEmpty
+              ? ChatHome(
+                  sendMessage: sendMessage,
+                )
+              : ListView.builder(
+                  itemCount: _chatController.historyMessages.messages.length,
+                  itemBuilder: (context, index) {
+                    final currMessage =
+                        _chatController.historyMessages.messages[index];
+                    return Column(
+                      crossAxisAlignment:
                           OpenAIChatMessageRole.user == currMessage.role
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
                       children: [
-                        Icon(OpenAIChatMessageRole.user == currMessage.role
-                            ? Icons.person
-                            : Icons.ac_unit),
-                        const SizedBox(
-                          width: 5,
+                        Row(
+                          mainAxisAlignment:
+                              OpenAIChatMessageRole.user == currMessage.role
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                          children: [
+                            Icon(OpenAIChatMessageRole.user == currMessage.role
+                                ? Icons.person
+                                : Icons.ac_unit),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(currMessage.role.name)
+                          ],
                         ),
-                        Text(currMessage.role.name)
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Row(
+                          mainAxisAlignment:
+                              OpenAIChatMessageRole.user == currMessage.role
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                          children: [
+                            Flexible(
+                                child: Card(
+                              shadowColor:
+                                  AdaptiveTheme.of(context).theme.cardColor,
+                              margin: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 5, bottom: 20),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 1, bottom: 1, left: 4, right: 4),
+                                child: MdCodeMath(currMessage.content),
+                              ),
+                            ))
+                          ],
+                        )
                       ],
-                    ),
-                    const SizedBox(
-                      height: 2,
-                    ),
-                    Row(
-                      mainAxisAlignment:
-                          OpenAIChatMessageRole.user == currMessage.role
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                      children: [
-                        Flexible(
-                            child: Card(
-                          shadowColor:
-                              AdaptiveTheme.of(context).theme.cardColor,
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, top: 5, bottom: 20),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 1, bottom: 1, left: 4, right: 4),
-                            child: MdCodeMath(currMessage.content),
-                          ),
-                        ))
-                      ],
-                    )
-                  ],
-                );
-              }),
+                    );
+                  }),
         ),
         bottomNavigationBar: Container(
           margin: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
@@ -128,7 +131,7 @@ class _ChatPageState extends State<ChatPage> {
                       _chatController.addMessage(Message(
                           content: userInputText,
                           role: OpenAIChatMessageRole.user,
-                          historyId: _chatController.historyId));
+                          historyId: _chatController.historyMessages.id));
                     },
                     child: const Icon(
                       Icons.send,
@@ -137,4 +140,6 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ));
   }
+
+  void sendMessage(String prompt) {}
 }

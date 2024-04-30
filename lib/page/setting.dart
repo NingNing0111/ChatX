@@ -18,12 +18,7 @@ class _SettingPageState extends State<SettingPage> {
   final _apiInputController = TextEditingController();
   final _keyInputController = TextEditingController();
   final _showOpenAIKey = false.obs;
-  final _temperature = 0.5.obs;
-  final _presencePenalty = 0.0.obs;
-  final _frequencyPenalty = 0.0.obs;
-  final RxInt _historyLength = 16.obs;
-  final _disabledSystemPrompt = true.obs;
-  final _topP = 0.5.obs;
+
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +159,8 @@ class _SettingPageState extends State<SettingPage> {
                           AssetsManage.apiIcon,
                           width: 30,
                           height: 30,
+                          color: AdaptiveTheme.of(context).mode.isLight ? Colors.black : Colors.white,
+
                         ),
                         const SizedBox(
                           width: 10,
@@ -260,6 +257,8 @@ class _SettingPageState extends State<SettingPage> {
                           AssetsManage.modelIcon,
                           width: 30,
                           height: 30,
+                          color: AdaptiveTheme.of(context).mode.isLight ? Colors.black : Colors.white,
+
                         ),
                         const SizedBox(
                           width: 10,
@@ -304,18 +303,18 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => Slider(
-                          value: _temperature.value,
+                          value: _settingController.temperature.value,
                           min: 0.0,
                           max: 1.0,
                           divisions: 10,
-                          label: _temperature.value.toStringAsFixed(1),
+                          label: _settingController.temperature.value.toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
                           // 设置非活动部分的颜色
                           // 设置刻度为10，对应0.0到1.0的范围
                           onChanged: (newValue) {
-                            _temperature.value = newValue;
+                            _settingController.temperature.value = newValue;
                           },
                         )),
                   ],
@@ -338,18 +337,18 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => Slider(
-                          value: _topP.value,
+                          value: _settingController.topP.value,
                           min: 0.0,
                           max: 1.0,
                           divisions: 10,
-                          label: _topP.value.toStringAsFixed(1),
+                          label: _settingController.topP.value.toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
                           // 设置非活动部分的颜色
                           // 设置刻度为10，对应0.0到1.0的范围
                           onChanged: (newValue) {
-                            _topP.value = newValue;
+                            _settingController.topP.value = newValue;
                           },
                         )),
                   ],
@@ -372,18 +371,18 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => Slider(
-                          value: _presencePenalty.value,
+                          value: _settingController.presencePenalty.value,
                           min: -2.0,
                           max: 2.0,
                           divisions: 20,
-                          label: _presencePenalty.value.toStringAsFixed(1),
+                          label: _settingController.presencePenalty.value.toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
                           // 设置非活动部分的颜色
                           // 设置刻度为10，对应0.0到1.0的范围
                           onChanged: (newValue) {
-                            _presencePenalty.value = newValue;
+                            _settingController.presencePenalty.value = newValue;
                           },
                         )),
                   ],
@@ -406,18 +405,18 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => Slider(
-                          value: _frequencyPenalty.value,
+                          value: _settingController.frequencyPenalty.value,
                           min: -2.0,
                           max: 2.0,
                           divisions: 20,
-                          label: _frequencyPenalty.value.toStringAsFixed(1),
+                          label: _settingController.frequencyPenalty.value.toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
                           // 设置非活动部分的颜色
                           // 设置刻度为10，对应0.0到1.0的范围
                           onChanged: (newValue) {
-                            _frequencyPenalty.value = newValue;
+                            _settingController.frequencyPenalty.value = newValue;
                           },
                         )),
                   ],
@@ -440,18 +439,18 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => Slider(
-                          value: _historyLength.value.toDouble(),
+                          value: _settingController.historyLength.value.toDouble(),
                           min: 0,
                           max: 32,
                           divisions: 32,
-                          label: _historyLength.value.toString(),
+                          label: _settingController.historyLength.value.toString(),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
                           // 设置非活动部分的颜色
                           // 设置刻度为10，对应0.0到1.0的范围
                           onChanged: (newValue) {
-                            _historyLength.value = newValue.toInt();
+                            _settingController.historyLength.value = newValue.toInt();
                           },
                         )),
                   ],
@@ -476,10 +475,10 @@ class _SettingPageState extends State<SettingPage> {
                     Obx(() => Switch(
                         activeColor: Colors.blue,
                         inactiveThumbColor: Colors.grey,
-                        value: _disabledSystemPrompt.value,
+                        value: _settingController.disabledSystemPrompt.value,
                         onChanged: (value) {
-                          _disabledSystemPrompt.value =
-                              !_disabledSystemPrompt.value;
+                          _settingController.disabledSystemPrompt.value =
+                              !_settingController.disabledSystemPrompt.value;
                         }))
                   ],
                 )
@@ -496,7 +495,9 @@ class _SettingPageState extends State<SettingPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _settingController.reset();
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
