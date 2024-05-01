@@ -19,7 +19,6 @@ class _SettingPageState extends State<SettingPage> {
   final _keyInputController = TextEditingController();
   final _showOpenAIKey = false.obs;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,8 +158,9 @@ class _SettingPageState extends State<SettingPage> {
                           AssetsManage.apiIcon,
                           width: 30,
                           height: 30,
-                          color: AdaptiveTheme.of(context).mode.isLight ? Colors.black : Colors.white,
-
+                          color: AdaptiveTheme.of(context).mode.isLight
+                              ? Colors.black
+                              : Colors.white,
                         ),
                         const SizedBox(
                           width: 10,
@@ -181,6 +181,10 @@ class _SettingPageState extends State<SettingPage> {
                         width: 250,
                         child: TextField(
                           controller: _apiInputController,
+                          onChanged: (String value) {
+                            _settingController.api.value =
+                                _apiInputController.text;
+                          },
                           decoration: const InputDecoration(
                             border: UnderlineInputBorder(),
                             hintText: "https://api.openai.com",
@@ -216,6 +220,10 @@ class _SettingPageState extends State<SettingPage> {
                         width: 250,
                         child: Obx(() => TextField(
                               controller: _keyInputController,
+                              onChanged: (String value) {
+                                _settingController.key.value =
+                                    _keyInputController.text;
+                              },
                               obscureText: !_showOpenAIKey.value,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
@@ -257,8 +265,9 @@ class _SettingPageState extends State<SettingPage> {
                           AssetsManage.modelIcon,
                           width: 30,
                           height: 30,
-                          color: AdaptiveTheme.of(context).mode.isLight ? Colors.black : Colors.white,
-
+                          color: AdaptiveTheme.of(context).mode.isLight
+                              ? Colors.black
+                              : Colors.white,
                         ),
                         const SizedBox(
                           width: 10,
@@ -275,14 +284,16 @@ class _SettingPageState extends State<SettingPage> {
                     DropdownButton(
                         padding: const EdgeInsets.all(5),
                         borderRadius: BorderRadius.circular(10),
-                        value: "gpt-3.5",
+                        value: "gpt-3.5-turbo",
                         items: const [
                           DropdownMenuItem<String>(
-                            value: "gpt-3.5",
-                            child: Text("gpt-3.5"),
+                            value: "gpt-3.5-turbo",
+                            child: Text("gpt-3.5-turbo"),
                           )
                         ],
-                        onChanged: (Object? value) {})
+                        onChanged: (String? value) {
+                          _settingController.chatModel.value = value!;
+                        })
                   ],
                 ),
                 Row(
@@ -307,7 +318,8 @@ class _SettingPageState extends State<SettingPage> {
                           min: 0.0,
                           max: 1.0,
                           divisions: 10,
-                          label: _settingController.temperature.value.toStringAsFixed(1),
+                          label: _settingController.temperature.value
+                              .toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
@@ -341,7 +353,8 @@ class _SettingPageState extends State<SettingPage> {
                           min: 0.0,
                           max: 1.0,
                           divisions: 10,
-                          label: _settingController.topP.value.toStringAsFixed(1),
+                          label:
+                              _settingController.topP.value.toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
@@ -375,7 +388,8 @@ class _SettingPageState extends State<SettingPage> {
                           min: -2.0,
                           max: 2.0,
                           divisions: 20,
-                          label: _settingController.presencePenalty.value.toStringAsFixed(1),
+                          label: _settingController.presencePenalty.value
+                              .toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
@@ -409,14 +423,16 @@ class _SettingPageState extends State<SettingPage> {
                           min: -2.0,
                           max: 2.0,
                           divisions: 20,
-                          label: _settingController.frequencyPenalty.value.toStringAsFixed(1),
+                          label: _settingController.frequencyPenalty.value
+                              .toStringAsFixed(1),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
                           // 设置非活动部分的颜色
                           // 设置刻度为10，对应0.0到1.0的范围
                           onChanged: (newValue) {
-                            _settingController.frequencyPenalty.value = newValue;
+                            _settingController.frequencyPenalty.value =
+                                newValue;
                           },
                         )),
                   ],
@@ -439,18 +455,21 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => Slider(
-                          value: _settingController.historyLength.value.toDouble(),
+                          value:
+                              _settingController.historyLength.value.toDouble(),
                           min: 0,
                           max: 32,
                           divisions: 32,
-                          label: _settingController.historyLength.value.toString(),
+                          label:
+                              _settingController.historyLength.value.toString(),
                           activeColor: Colors.blue,
                           // 设置活动部分的颜色
                           inactiveColor: Colors.grey,
                           // 设置非活动部分的颜色
                           // 设置刻度为10，对应0.0到1.0的范围
                           onChanged: (newValue) {
-                            _settingController.historyLength.value = newValue.toInt();
+                            _settingController.historyLength.value =
+                                newValue.toInt();
                           },
                         )),
                   ],

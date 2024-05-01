@@ -1,9 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:chat_all/service/assets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -37,6 +34,9 @@ class _SidebarPageState extends State<SidebarPage> {
                 padding: const EdgeInsets.all(5),
                 height: 50,
                 child: GestureDetector(
+                  onTap: (){
+                    print("add");
+                  },
                     child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -70,32 +70,63 @@ class _SidebarPageState extends State<SidebarPage> {
                 padding: EdgeInsets.zero,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(left: 10,right: 10,top: 5),
+                    margin: const EdgeInsets.only(left: 10, right: 10, top: 5),
                     padding: const EdgeInsets.all(5),
-                    height: 80,
+                    height: 100,
                     decoration: BoxDecoration(
-                        // color: Colors.pink,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                             color: const Color(0xff4691a8), width: 2)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("新的对话",style: AdaptiveTheme.of(context).theme.textTheme.titleLarge,),
-                      const SizedBox(height: 10,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("10 条对话",style: AdaptiveTheme.of(context).theme.textTheme.titleMedium,),
-                          Text(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),style: AdaptiveTheme.of(context).theme.textTheme.titleMedium,)
-                        ],
-                      )
-                    ],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "新的对话",
+                              style: AdaptiveTheme.of(context)
+                                  .theme
+                                  .textTheme
+                                  .titleLarge,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  print("hi");
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                  size: 30,
+                                ))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "10 条对话",
+                              style: AdaptiveTheme.of(context)
+                                  .theme
+                                  .textTheme
+                                  .titleMedium,
+                            ),
+                            Text(
+                              DateFormat('yyyy-MM-dd HH:mm:ss')
+                                  .format(DateTime.now()),
+                              style: AdaptiveTheme.of(context)
+                                  .theme
+                                  .textTheme
+                                  .titleMedium,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                  ),
-
-
-
                 ],
               ),
             ),

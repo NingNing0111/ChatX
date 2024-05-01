@@ -15,7 +15,7 @@ class ChatPageController extends GetxController {
     super.onInit();
   }
 
-  void updateMessage(int index, String content) {
+  void updateMessageContent(int index, String content) {
     historyMessages.messages[index].content = content;
     update();
   }

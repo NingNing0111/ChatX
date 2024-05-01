@@ -2,8 +2,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:chat_all/component/chat_home.dart';
 import 'package:chat_all/component/md_code_highlight_math.dart';
 import 'package:chat_all/controller/chat.dart';
+import 'package:chat_all/controller/setting.dart';
 import 'package:chat_all/model/message.dart';
 import 'package:chat_all/page/sidebar.dart';
+import 'package:chat_all/service/openai.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +19,17 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final _chatController = Get.find<ChatPageController>();
+  final _settingController = Get.find<SettingPageController>();
   final _textEditingController = TextEditingController();
+  final _chatService = OpenAIService();
+
+  @override
+  void initState() {
+    super.initState();
+    _chatService.init(
+        api: _settingController.api.value, key: _settingController.key.value);
+    sendMessage("hi");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
                   size: 30,
                 ),
               ),
-            )
+            ),
           ],
           leading: Builder(
             builder: (context) {
@@ -128,10 +140,7 @@ class _ChatPageState extends State<ChatPage> {
                     onTap: () async {
                       final userInputText = _textEditingController.text;
                       _textEditingController.clear();
-                      _chatController.addMessage(Message(
-                          content: userInputText,
-                          role: OpenAIChatMessageRole.user,
-                          historyId: _chatController.historyMessages.id));
+                      await sendMessage(userInputText);
                     },
                     child: const Icon(
                       Icons.send,
@@ -141,5 +150,33 @@ class _ChatPageState extends State<ChatPage> {
         ));
   }
 
-  void sendMessage(String prompt) {}
+  Future<void> sendMessage(String prompt) async {
+    _chatController.addMessage(Message(
+        content: prompt,
+        role: OpenAIChatMessageRole.user,
+        historyId: _chatController.historyMessages.id));
+    _chatController.addMessage(Message(
+        content: "",
+        role: OpenAIChatMessageRole.assistant,
+        historyId: _chatController.historyMessages.id));
+    _chatService.streamChat(
+      messages: _chatController.historyMessages.messages,
+      model: _settingController.chatModel.value,
+      temperature: _settingController.temperature.value,
+      topP: _settingController.topP.value,
+      presencePenalty: _settingController.presencePenalty.value,
+      frequencyPenalty: _settingController.frequencyPenalty.value,
+      resultBack: onData,
+      onDone: onDone,
+    );
+  }
+
+  void onData(event) async {
+    _chatController.updateMessageContent(
+        _chatController.historyMessages.messages.length - 1, event);
+  }
+
+  void onDone() {
+    print("done");
+  }
 }
