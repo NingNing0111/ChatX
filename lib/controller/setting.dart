@@ -11,7 +11,7 @@ class SettingPageController  extends  GetxController {
   final language = Get.deviceLocale.obs;
   // api设置
   final api = "https://api.mnzdna.xyz".obs;
-  final key = "sk-W9kYeE3JfWM86sr66e29FfC7B3194406B96fAd460353Dc7a".obs;
+  final key = "".obs;
   // 对话配置
   final chatModel = "gpt-3.5-turbo".obs;
   final temperature = 0.5.obs;
