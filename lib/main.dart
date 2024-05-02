@@ -1,6 +1,7 @@
 import 'package:chat_all/config/theme/theme.dart';
 import 'package:chat_all/controller/chat.dart';
 import 'package:chat_all/controller/setting.dart';
+import 'package:chat_all/controller/sidebar.dart';
 import 'package:chat_all/i18n/record.dart';
 import 'package:chat_all/page/chat.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.lazyPut(() => ChatPageController());
     Get.lazyPut(() => SettingPageController());
+    Get.lazyPut(() => SidebarPageController());
+
 
     return AdaptiveTheme(
         light: AppTheme.light,

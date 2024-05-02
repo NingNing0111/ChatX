@@ -10,6 +10,8 @@ import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controller/sidebar.dart';
+
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
@@ -20,15 +22,16 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final _chatController = Get.find<ChatPageController>();
   final _settingController = Get.find<SettingPageController>();
-  final _textEditingController = TextEditingController();
+  final _sidebarController = Get.find<SidebarPageController>();
   final _chatService = OpenAIService();
+  final _textEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _chatService.init(
         api: _settingController.api.value, key: _settingController.key.value);
-    sendMessage("hi");
   }
 
   @override
@@ -72,6 +75,7 @@ class _ChatPageState extends State<ChatPage> {
                   sendMessage: sendMessage,
                 )
               : ListView.builder(
+                  controller: _scrollController,
                   itemCount: _chatController.historyMessages.messages.length,
                   itemBuilder: (context, index) {
                     final currMessage =
@@ -115,7 +119,11 @@ class _ChatPageState extends State<ChatPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 1, bottom: 1, left: 4, right: 4),
-                                child: MdCodeMath(currMessage.content),
+                                child: currMessage.content.isEmpty
+                                    ? const CircularProgressIndicator(
+                                        backgroundColor: Colors.blue,
+                                      )
+                                    : MdCodeMath(currMessage.content),
                               ),
                             ))
                           ],
@@ -151,32 +159,58 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendMessage(String prompt) async {
+    if(_chatController.historyMessages.messages.isEmpty){
+      _chatController.historyMessages.title = prompt;
+      _sidebarController.updateHistory(_chatController.historyMessages);
+    }
+
     _chatController.addMessage(Message(
         content: prompt,
         role: OpenAIChatMessageRole.user,
         historyId: _chatController.historyMessages.id));
+
     _chatController.addMessage(Message(
         content: "",
         role: OpenAIChatMessageRole.assistant,
         historyId: _chatController.historyMessages.id));
-    _chatService.streamChat(
-      messages: _chatController.historyMessages.messages,
-      model: _settingController.chatModel.value,
-      temperature: _settingController.temperature.value,
-      topP: _settingController.topP.value,
-      presencePenalty: _settingController.presencePenalty.value,
-      frequencyPenalty: _settingController.frequencyPenalty.value,
-      resultBack: onData,
-      onDone: onDone,
+
+    // 获取对话Message
+    final chatMessage = getChatMessageByLen();
+    await _chatService.streamChat(
+        messages: chatMessage,
+        model: _settingController.chatModel.value,
+        temperature: _settingController.temperature.value,
+        topP: _settingController.topP.value,
+        presencePenalty: _settingController.presencePenalty.value,
+        frequencyPenalty: _settingController.frequencyPenalty.value,
+        onDone: () {
+          print("完成");
+        },
+        resultBack: (event) {
+          _chatController.updateMessageContent(
+              _chatController.historyMessages.messages.length - 1, event);
+          updateToBottom();
+        }); //
+
+  }
+
+  void updateToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.ease,
     );
   }
 
-  void onData(event) async {
-    _chatController.updateMessageContent(
-        _chatController.historyMessages.messages.length - 1, event);
-  }
-
-  void onDone() {
-    print("done");
+  List<Message> getChatMessageByLen(){
+    // message 列表
+    final chatMessage = _chatController.historyMessages.messages;
+    // 长度、最大长度
+    final len = chatMessage.length;
+    final maxLen = _settingController.historyLength.value;
+    if(len > maxLen){
+      return chatMessage.sublist(len-maxLen);
+    }
+    return chatMessage;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:dart_openai/dart_openai.dart';
+import 'package:chat_all/controller/sidebar.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
@@ -7,8 +7,7 @@ import '../model/message.dart';
 var uuid = Uuid();
 
 class ChatPageController extends GetxController {
-  final HistoryMessage historyMessages = HistoryMessage(
-      id: uuid.v1(), title: "新的对话", messages: [], createTime: DateTime.now());
+  HistoryMessage historyMessages = Get.find<SidebarPageController>().histories.last;
 
   @override
   void onInit() {
@@ -22,6 +21,16 @@ class ChatPageController extends GetxController {
 
   void addMessage(Message message) {
     historyMessages.messages.add(message);
+    update();
+  }
+
+  void reloadHistory() {
+    historyMessages = Get.find<SidebarPageController>().histories.last;
+    update();
+  }
+
+  void setHistory(HistoryMessage history) {
+    historyMessages = history;
     update();
   }
 }

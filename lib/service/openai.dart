@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,7 +17,7 @@ class OpenAIService {
   }
 
   // 流式对话
-  void streamChat(
+  Future<void> streamChat(
       {required List<Message> messages,
       required String model,
       required double temperature,
@@ -24,9 +26,8 @@ class OpenAIService {
       required double frequencyPenalty,
       required Function onDone,
       Function? onError,
-      required ValueChanged resultBack}) {
+      required ValueChanged resultBack}) async {
     var chatMessages = transformMessage(messages);
-    var assistantMessage = <String>{};
     final chatStream = OpenAI.instance.chat.createStream(
         model: model,
         messages: chatMessages,
@@ -34,19 +35,35 @@ class OpenAIService {
         topP: topP,
         presencePenalty: presencePenalty,
         frequencyPenalty: frequencyPenalty);
-    chatStream.listen((event) async {
+    final completer = Completer<bool>();
+
+    var assistantMessage = "";
+    chatStream.listen((event) {
       var content = event.choices.first.delta.content;
-      if(content != null){
+      if (content != null && !completer.isCompleted) {
         String subText = content.first!.text!;
-        if(!assistantMessage.contains(subText)){
-          assistantMessage.add(subText);
-          resultBack(assistantMessage.join());
+        assistantMessage = assistantMessage + subText;
+        resultBack(assistantMessage);
+      } else {
+        if(!completer.isCompleted){
+          completer.complete(true);
+          assistantMessage = "";
         }
       }
-
-    }, onDone: (){
-      assistantMessage.clear();
+    }, onDone: () {
+      onDone();
+      if(!completer.isCompleted){
+        completer.complete(true);
+        assistantMessage = "";
+      }
+    }, onError: (err) {
+      resultBack(err.toString());
+      if(!completer.isCompleted){
+        completer.complete(true);
+        assistantMessage = "";
+      }
     });
+    await completer.future;
   }
 
   // 将Message List转换为

@@ -1,16 +1,36 @@
 # chat_all
 
-A new Flutter project.
+&emsp;ChatGPT 移动端应用。
 
-## Getting Started
+## 特性
 
-This project is a starting point for a Flutter application.
+- 流式输出响应，体验极佳；
+- 支持Markdown渲染、代码高亮、Latex渲染；
+- 支持一键复制代码；
+- 支持对话模型微调；
+- 国际化，支持中英文；
+- 主题切换
 
-A few resources to get you started if this is your first Flutter project:
+## 效果图
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 设置页面
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![img.png](doc/images/1.png)
+
+### 对话页面
+
+![img.png](doc/images/2.png)
+
+### 对话历史记录
+
+![img.png](doc/images/3.png)
+
+![img.png](doc/images/4.png)
+
+### 渲染展示
+
+![img.png](doc/images/5.png)
+
+![img.png](doc/images/6.png)
+
+

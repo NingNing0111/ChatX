@@ -30,7 +30,9 @@ class MessageRecord extends Translations {
       "chat_page_home_tip_history_title": "了解历史人物",
       "chat_page_home_tip_history_content": "请向我讲述下马克思的一生及其作品",
       "chat_page_home_tip_tour_title": "提供旅行计划",
-      "chat_page_home_tip_tour_content": "请给我一些关于拉萨旅行的计划"
+      "chat_page_home_tip_tour_content": "请给我一些关于拉萨旅行的计划",
+      "default_history_chat_title": "开启新对话",
+      "default_history_chat_overview": "新的聊天"
     },
     'en_US': {
       "title": "Chat All",
@@ -49,7 +51,7 @@ class MessageRecord extends Translations {
       "chat_setting_presence_penalty": "Presence Penalty",
       "chat_setting_frequency_penalty": "Frequency Penalty",
       "chat_setting_history_length": "History Length",
-      "chat_setting_disabled_system_prompt": "Disabled System Prompt",
+      "chat_setting_disabled_system_prompt": "Enable System Prompt",
       "chat_other_reset_setting": "Reset Settings",
       "chat_other_clear_history": "Clear History",
       "chat_page_title": "Chat Conversation",
@@ -58,7 +60,9 @@ class MessageRecord extends Translations {
       "chat_page_home_tip_history_title": "Learn about historical figures",
       "chat_page_home_tip_history_content": "Please tell me about Marx’s life and works.",
       "chat_page_home_tip_tour_title": "Provide travel plans",
-      "chat_page_home_tip_tour_content": "Please give me some travel plans about Lhasa"
+      "chat_page_home_tip_tour_content": "Please give me some travel plans about Lhasa",
+      "default_history_chat_title": "New Chat",
+      "default_history_chat_overview": "Chat Overview"
     }
   };
 

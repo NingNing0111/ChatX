@@ -20,6 +20,13 @@ class _SettingPageState extends State<SettingPage> {
   final _showOpenAIKey = false.obs;
 
   @override
+  void initState() {
+    super.initState();
+    _apiInputController.text = _settingController.api.value;
+    _keyInputController.text = _settingController.key.value;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
