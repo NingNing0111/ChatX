@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../controller/chat.dart';
+import '../controller/sidebar.dart';
 import '../service/assets.dart';
 
 class SettingPage extends StatefulWidget {
@@ -15,6 +17,10 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   final _settingController = Get.find<SettingPageController>();
+  final _sidebarController = Get.find<SidebarPageController>();
+  final _chatController = Get.find<ChatPageController>();
+
+
   final _apiInputController = TextEditingController();
   final _keyInputController = TextEditingController();
   final _showOpenAIKey = false.obs;
@@ -536,7 +542,23 @@ class _SettingPageState extends State<SettingPage> {
                               fontWeight: FontWeight.bold)),
                     )),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.defaultDialog(
+                        title: "default_dialog_delete_title".tr,
+                        textConfirm: "default_dialog_delete_text".tr,
+                        confirmTextColor: Colors.red,
+                        backgroundColor: AdaptiveTheme.of(context).theme.primaryColor,
+                        textCancel: "default_dialog_cancel_text".tr,
+                        content: Text("default_dialog_delete_content".tr,style: AdaptiveTheme.of(context).theme.textTheme.titleMedium,),
+                        onConfirm: (){
+                          _sidebarController.clearHistory();
+                          _chatController.reloadHistory();
+                          Get.back();
+                        },
+                        onCancel: (){
+                        }
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(

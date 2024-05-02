@@ -59,4 +59,12 @@ class SidebarPageController extends GetxController {
         id: const Uuid().v1(), title: defaultOverview, messages: [], createTime: DateTime.now()));
     update();
   }
+
+  void clearHistory() {
+    histories.clear();
+    newHistory();
+    choice.value = 0;
+    update();
+  }
+
 }

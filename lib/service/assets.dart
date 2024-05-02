@@ -6,4 +6,8 @@ class AssetsManage {
   static const temperatureIcon = "$BASE_PATH/temperature.svg";
   static const randomIcon = "$BASE_PATH/random.svg";
   static const openaiIcon = "$BASE_PATH/openai.svg";
+  static const userIcon = "$BASE_PATH/user.svg";
+  static const robotIcon = "$BASE_PATH/robot.svg";
+
+
 }

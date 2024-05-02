@@ -5,9 +5,12 @@ import 'package:chat_all/controller/chat.dart';
 import 'package:chat_all/controller/setting.dart';
 import 'package:chat_all/model/message.dart';
 import 'package:chat_all/page/sidebar.dart';
+import 'package:chat_all/service/assets.dart';
 import 'package:chat_all/service/openai.dart';
 import 'package:dart_openai/dart_openai.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../controller/sidebar.dart';
@@ -26,12 +29,11 @@ class _ChatPageState extends State<ChatPage> {
   final _chatService = OpenAIService();
   final _textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final isWaiting = false.obs;
 
   @override
   void initState() {
     super.initState();
-    _chatService.init(
-        api: _settingController.api.value, key: _settingController.key.value);
   }
 
   @override
@@ -86,20 +88,34 @@ class _ChatPageState extends State<ChatPage> {
                               ? CrossAxisAlignment.end
                               : CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment:
-                              OpenAIChatMessageRole.user == currMessage.role
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start,
-                          children: [
-                            Icon(OpenAIChatMessageRole.user == currMessage.role
-                                ? Icons.person
-                                : Icons.ac_unit),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(currMessage.role.name)
-                          ],
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 10, right: 10, top: 10),
+                          child: Row(
+                            mainAxisAlignment:
+                                OpenAIChatMessageRole.user == currMessage.role
+                                    ? MainAxisAlignment.end
+                                    : MainAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                OpenAIChatMessageRole.user == currMessage.role
+                                    ? AssetsManage.userIcon
+                                    : AssetsManage.robotIcon,
+                                width: 30,
+                                height: 30,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                currMessage.role.name.toUpperCase(),
+                                style: AdaptiveTheme.of(context)
+                                    .theme
+                                    .textTheme
+                                    .titleLarge,
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 2,
@@ -144,22 +160,30 @@ class _ChatPageState extends State<ChatPage> {
                 fillColor: AdaptiveTheme.of(context).theme.hoverColor,
                 filled: true,
                 hintText: "chat_page_input_hint".tr,
-                suffixIcon: GestureDetector(
-                    onTap: () async {
-                      final userInputText = _textEditingController.text;
-                      _textEditingController.clear();
-                      await sendMessage(userInputText);
-                    },
-                    child: const Icon(
-                      Icons.send,
-                      size: 30,
-                    ))),
+                suffixIcon: Obx(() => isWaiting.value
+                    ? const CircularProgressIndicator(color: Colors.blue,)
+                    : GestureDetector(
+                        onTap: () async {
+                          final userInputText = _textEditingController.text;
+                          if(userInputText.isEmpty){
+                            return;
+                          }
+                          isWaiting(true);
+                          _textEditingController.clear();
+
+                          await sendMessage(userInputText);
+                          isWaiting(false);
+                        },
+                        child: const Icon(
+                          Icons.send,
+                          size: 30,
+                        )))),
           ),
         ));
   }
 
   Future<void> sendMessage(String prompt) async {
-    if(_chatController.historyMessages.messages.isEmpty){
+    if (_chatController.historyMessages.messages.isEmpty) {
       _chatController.historyMessages.title = prompt;
       _sidebarController.updateHistory(_chatController.historyMessages);
     }
@@ -173,7 +197,8 @@ class _ChatPageState extends State<ChatPage> {
         content: "",
         role: OpenAIChatMessageRole.assistant,
         historyId: _chatController.historyMessages.id));
-
+    _chatService.init(
+        api: _settingController.api.value, key: _settingController.key.value);
     // 获取对话Message
     final chatMessage = getChatMessageByLen();
     await _chatService.streamChat(
@@ -191,7 +216,6 @@ class _ChatPageState extends State<ChatPage> {
               _chatController.historyMessages.messages.length - 1, event);
           updateToBottom();
         }); //
-
   }
 
   void updateToBottom() {
@@ -202,14 +226,14 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  List<Message> getChatMessageByLen(){
+  List<Message> getChatMessageByLen() {
     // message 列表
     final chatMessage = _chatController.historyMessages.messages;
     // 长度、最大长度
     final len = chatMessage.length;
     final maxLen = _settingController.historyLength.value;
-    if(len > maxLen){
-      return chatMessage.sublist(len-maxLen);
+    if (len > maxLen) {
+      return chatMessage.sublist(len - maxLen);
     }
     return chatMessage;
   }

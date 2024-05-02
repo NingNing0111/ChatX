@@ -32,7 +32,12 @@ class MessageRecord extends Translations {
       "chat_page_home_tip_tour_title": "提供旅行计划",
       "chat_page_home_tip_tour_content": "请给我一些关于拉萨旅行的计划",
       "default_history_chat_title": "开启新对话",
-      "default_history_chat_overview": "新的聊天"
+      "default_history_chat_overview": "新的聊天",
+      "default_dialog_delete_title": "确定删除",
+      "default_dialog_delete_content": "确定删除吗？",
+
+      "default_dialog_delete_text": "删除",
+      "default_dialog_cancel_text": "关闭"
     },
     'en_US': {
       "title": "Chat All",
@@ -62,7 +67,11 @@ class MessageRecord extends Translations {
       "chat_page_home_tip_tour_title": "Provide travel plans",
       "chat_page_home_tip_tour_content": "Please give me some travel plans about Lhasa",
       "default_history_chat_title": "New Chat",
-      "default_history_chat_overview": "Chat Overview"
+      "default_history_chat_overview": "Chat Overview",
+      "default_dialog_delete_title": "Confirm Delete",
+      "default_dialog_delete_content": "Confirm to delete?",
+      "default_dialog_delete_text": "Delete",
+      "default_dialog_cancel_text": "Cancel"
     }
   };
 
