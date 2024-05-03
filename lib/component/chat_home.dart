@@ -45,46 +45,13 @@ class ChatHome extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  sendMessage("chat_page_home_tip_history_content".tr);
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  width: 370,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xffd9d9d9))
-
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "chat_page_home_tip_history_title".tr,
-                        style: AdaptiveTheme.of(context)
-                            .theme
-                            .textTheme
-                            .titleLarge,
-                      ),
-                      Text(
-                        "chat_page_home_tip_history_content".tr,
-                        style: AdaptiveTheme.of(context)
-                            .theme
-                            .textTheme
-                            .titleMedium,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
                   sendMessage("chat_page_home_tip_tour_content".tr);
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   width: 370,
                   decoration: BoxDecoration(
+                    color: Colors.red,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: const Color(0xffd9d9d9))
                   ),
@@ -94,22 +61,49 @@ class ChatHome extends StatelessWidget {
                     children: [
                       Text(
                         "chat_page_home_tip_tour_title".tr,
-                        style: AdaptiveTheme.of(context)
-                            .theme
-                            .textTheme
-                            .titleLarge,
+                        style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),
+
                       ),
                       Text(
                         "chat_page_home_tip_tour_content".tr,
-                        style: AdaptiveTheme.of(context)
-                            .theme
-                            .textTheme
-                            .titleMedium,
+                        style: TextStyle(fontSize: 16,color: Colors.black),
+
                       )
                     ],
                   ),
                 ),
               ),
+              GestureDetector(
+                onTap: () {
+                  sendMessage("chat_page_home_tip_social_content".tr);
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  width: 370,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: const Color(0xffd9d9d9))
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "chat_page_home_tip_social_title".tr,
+                        style: const TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.bold),
+
+                      ),
+                      Text(
+                        "chat_page_home_tip_social_content".tr,
+                        style: const TextStyle(fontSize: 16,color: Colors.black),
+
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
             ],
           ),
         )

@@ -16,6 +16,7 @@ class SettingPageController  extends  GetxController {
   final key = "".obs;
   // 对话配置
   final chatModel = "gpt-3.5-turbo".obs;
+  final drawModel = "dall-e-2".obs;
   final temperature = 0.5.obs;
   final presencePenalty = 0.0.obs;
   final frequencyPenalty = 0.0.obs;

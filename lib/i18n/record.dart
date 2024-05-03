@@ -31,11 +31,13 @@ class MessageRecord extends Translations {
       "chat_page_home_tip_history_content": "请向我讲述下马克思的一生及其作品",
       "chat_page_home_tip_tour_title": "提供旅行计划",
       "chat_page_home_tip_tour_content": "请给我一些关于拉萨旅行的计划",
+      "chat_page_home_tip_social_title": "学习社交技巧",
+      "chat_page_home_tip_social_content": "如何结交到真心朋友？",
+
       "default_history_chat_title": "开启新对话",
       "default_history_chat_overview": "新的聊天",
       "default_dialog_delete_title": "确定删除",
       "default_dialog_delete_content": "确定删除吗？",
-
       "default_dialog_delete_text": "删除",
       "default_dialog_cancel_text": "关闭"
     },
@@ -65,7 +67,9 @@ class MessageRecord extends Translations {
       "chat_page_home_tip_history_title": "Learn about historical figures",
       "chat_page_home_tip_history_content": "Please tell me about Marx’s life and works.",
       "chat_page_home_tip_tour_title": "Provide travel plans",
-      "chat_page_home_tip_tour_content": "Please give me some travel plans about Lhasa",
+      "chat_page_home_tip_tour_content": "Please give me some travel plans about Lhasa.",
+      "chat_page_home_tip_social_title": "Learn social skills",
+      "chat_page_home_tip_social_content": "How to make true friends?",
       "default_history_chat_title": "New Chat",
       "default_history_chat_overview": "Chat Overview",
       "default_dialog_delete_title": "Confirm Delete",

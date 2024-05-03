@@ -5,7 +5,6 @@ import 'package:uuid/uuid.dart';
 
 class SidebarPageController extends GetxController {
 
-  final defaultOverview = "default_history_chat_overview".tr;
   final histories = <HistoryMessage>[HistoryMessage(id: Uuid().v1(), title: "default_history_chat_overview".tr, messages: [], createTime: DateTime.now())].obs;
 
   final choice = 0.obs;
@@ -64,7 +63,7 @@ class SidebarPageController extends GetxController {
   void newHistory() {
     choice.value = 0;
     addHistory(HistoryMessage(
-        id: const Uuid().v1(), title: defaultOverview, messages: [], createTime: DateTime.now()));
+        id: const Uuid().v1(), title: "default_history_chat_overview".tr, messages: [], createTime: DateTime.now()));
     update();
   }
 

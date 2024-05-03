@@ -20,7 +20,6 @@ class _SettingPageState extends State<SettingPage> {
   final _sidebarController = Get.find<SidebarPageController>();
   final _chatController = Get.find<ChatPageController>();
 
-
   final _apiInputController = TextEditingController();
   final _keyInputController = TextEditingController();
   final _showOpenAIKey = false.obs;
@@ -31,7 +30,6 @@ class _SettingPageState extends State<SettingPage> {
     _apiInputController.text = _settingController.api.value;
     _keyInputController.text = _settingController.key.value;
   }
-
 
   @override
   void dispose() {
@@ -201,6 +199,7 @@ class _SettingPageState extends State<SettingPage> {
                     SizedBox(
                         width: 250,
                         child: TextField(
+                          cursorColor: Colors.blue,
                           controller: _apiInputController,
                           onChanged: (String value) {
                             _settingController.api.value =
@@ -240,6 +239,7 @@ class _SettingPageState extends State<SettingPage> {
                     SizedBox(
                         width: 250,
                         child: Obx(() => TextField(
+                              cursorColor: Colors.blue,
                               controller: _keyInputController,
                               onChanged: (String value) {
                                 _settingController.key.value =
@@ -335,8 +335,8 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => SizedBox(
-                      width: 170,
-                      child: Slider(
+                          width: 170,
+                          child: Slider(
                             value: _settingController.temperature.value,
                             min: 0.0,
                             max: 1.0,
@@ -352,7 +352,7 @@ class _SettingPageState extends State<SettingPage> {
                               _settingController.temperature.value = newValue;
                             },
                           ),
-                    )),
+                        )),
                   ],
                 ),
                 Row(
@@ -373,14 +373,14 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => SizedBox(
-                      width: 170,
-                      child: Slider(
+                          width: 170,
+                          child: Slider(
                             value: _settingController.topP.value,
                             min: 0.0,
                             max: 1.0,
                             divisions: 10,
-                            label:
-                                _settingController.topP.value.toStringAsFixed(1),
+                            label: _settingController.topP.value
+                                .toStringAsFixed(1),
                             activeColor: Colors.blue,
                             // 设置活动部分的颜色
                             inactiveColor: Colors.grey,
@@ -390,7 +390,7 @@ class _SettingPageState extends State<SettingPage> {
                               _settingController.topP.value = newValue;
                             },
                           ),
-                    )),
+                        )),
                   ],
                 ),
                 Row(
@@ -411,8 +411,8 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => SizedBox(
-                      width: 170,
-                      child: Slider(
+                          width: 170,
+                          child: Slider(
                             value: _settingController.presencePenalty.value,
                             min: -2.0,
                             max: 2.0,
@@ -425,10 +425,11 @@ class _SettingPageState extends State<SettingPage> {
                             // 设置非活动部分的颜色
                             // 设置刻度为10，对应0.0到1.0的范围
                             onChanged: (newValue) {
-                              _settingController.presencePenalty.value = newValue;
+                              _settingController.presencePenalty.value =
+                                  newValue;
                             },
                           ),
-                    )),
+                        )),
                   ],
                 ),
                 Row(
@@ -449,8 +450,8 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => SizedBox(
-                      width: 170,
-                      child: Slider(
+                          width: 170,
+                          child: Slider(
                             value: _settingController.frequencyPenalty.value,
                             min: -2.0,
                             max: 2.0,
@@ -467,7 +468,7 @@ class _SettingPageState extends State<SettingPage> {
                                   newValue;
                             },
                           ),
-                    )),
+                        )),
                   ],
                 ),
                 Row(
@@ -488,15 +489,15 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                     Obx(() => SizedBox(
-                      width: 170,
-                      child: Slider(
-                            value:
-                                _settingController.historyLength.value.toDouble(),
+                          width: 170,
+                          child: Slider(
+                            value: _settingController.historyLength.value
+                                .toDouble(),
                             min: 0,
                             max: 32,
                             divisions: 32,
-                            label:
-                                _settingController.historyLength.value.toString(),
+                            label: _settingController.historyLength.value
+                                .toString(),
                             activeColor: Colors.blue,
                             // 设置活动部分的颜色
                             inactiveColor: Colors.grey,
@@ -507,7 +508,7 @@ class _SettingPageState extends State<SettingPage> {
                                   newValue.toInt();
                             },
                           ),
-                    )),
+                        )),
                   ],
                 ),
                 Row(
@@ -567,20 +568,25 @@ class _SettingPageState extends State<SettingPage> {
                 TextButton(
                     onPressed: () {
                       Get.defaultDialog(
-                        title: "default_dialog_delete_title".tr,
-                        textConfirm: "default_dialog_delete_text".tr,
-                        confirmTextColor: Colors.red,
-                        backgroundColor: AdaptiveTheme.of(context).theme.primaryColor,
-                        textCancel: "default_dialog_cancel_text".tr,
-                        content: Text("default_dialog_delete_content".tr,style: AdaptiveTheme.of(context).theme.textTheme.titleMedium,),
-                        onConfirm: (){
-                          _sidebarController.clearHistory();
-                          _chatController.reloadHistory();
-                          Get.back();
-                        },
-                        onCancel: (){
-                        }
-                      );
+                          title: "default_dialog_delete_title".tr,
+                          textConfirm: "default_dialog_delete_text".tr,
+                          confirmTextColor: Colors.red,
+                          backgroundColor:
+                              AdaptiveTheme.of(context).theme.primaryColor,
+                          textCancel: "default_dialog_cancel_text".tr,
+                          content: Text(
+                            "default_dialog_delete_content".tr,
+                            style: AdaptiveTheme.of(context)
+                                .theme
+                                .textTheme
+                                .titleMedium,
+                          ),
+                          onConfirm: () {
+                            _sidebarController.clearHistory();
+                            _chatController.reloadHistory();
+                            Get.back();
+                          },
+                          onCancel: () {});
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),

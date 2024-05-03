@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:chat_all/component/chat_home.dart';
 import 'package:chat_all/component/md_code_highlight_math.dart';
@@ -8,10 +10,11 @@ import 'package:chat_all/page/sidebar.dart';
 import 'package:chat_all/service/assets.dart';
 import 'package:chat_all/service/openai.dart';
 import 'package:dart_openai/dart_openai.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+
+
 
 import '../controller/sidebar.dart';
 
@@ -29,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
   final _chatService = OpenAIService();
   final _textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final isWaiting = false.obs;
+  final isWaiting = false.obs; // 给我一张小狗狗的照片
 
   @override
   void initState() {
@@ -72,7 +75,8 @@ class _ChatPageState extends State<ChatPage> {
         ),
         drawer: const SidebarPage(),
         body: GetBuilder<ChatPageController>(
-          builder: (context) => _chatController.currHistoryMessage.messages.isEmpty
+          builder: (context) => _chatController
+                  .currHistoryMessage.messages.isEmpty
               ? ChatHome(
                   sendMessage: sendMessage,
                 )
@@ -149,9 +153,11 @@ class _ChatPageState extends State<ChatPage> {
                   }),
         ),
         bottomNavigationBar: Container(
-          margin: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+          margin:
+              const EdgeInsets.only(top: 5, bottom: 10, left: 10, right: 10),
           padding: MediaQuery.of(context).viewInsets,
           child: TextField(
+            cursorColor: Colors.blue,
             controller: _textEditingController,
             decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -161,11 +167,13 @@ class _ChatPageState extends State<ChatPage> {
                 filled: true,
                 hintText: "chat_page_input_hint".tr,
                 suffixIcon: Obx(() => isWaiting.value
-                    ? const CircularProgressIndicator(color: Colors.blue,)
+                    ? const CircularProgressIndicator(
+                        color: Colors.blue,
+                      )
                     : GestureDetector(
                         onTap: () async {
                           final userInputText = _textEditingController.text;
-                          if(userInputText.isEmpty){
+                          if (userInputText.isEmpty) {
                             return;
                           }
                           isWaiting(true);
@@ -187,7 +195,6 @@ class _ChatPageState extends State<ChatPage> {
       _chatController.currHistoryMessage.title = prompt;
       _sidebarController.updateHistory(_chatController.currHistoryMessage);
     }
-
     _chatController.addMessage(Message(
         content: prompt,
         role: OpenAIChatMessageRole.user,
@@ -197,11 +204,17 @@ class _ChatPageState extends State<ChatPage> {
         content: "",
         role: OpenAIChatMessageRole.assistant,
         historyId: _chatController.currHistoryMessage.id));
+
     _chatService.init(
         api: _settingController.api.value, key: _settingController.key.value);
+
     // 获取对话Message
     final chatMessage = getChatMessageByLen();
-    await _chatService.streamChat(
+    log("$chatMessage------**********");
+
+    // 发起对话
+    await _chatService.chat(
+      drawModel: _settingController.drawModel.value,
         messages: chatMessage,
         model: _settingController.chatModel.value,
         temperature: _settingController.temperature.value,
@@ -226,6 +239,7 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  // 限制消息列表的最大长度
   List<Message> getChatMessageByLen() {
     // message 列表
     final chatMessage = _chatController.currHistoryMessage.messages;
