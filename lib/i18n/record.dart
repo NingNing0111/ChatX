@@ -20,7 +20,7 @@ class MessageRecord extends Translations {
       "chat_setting_top_p": "核采样",
       "chat_setting_presence_penalty": "话题新鲜度",
       "chat_setting_frequency_penalty": "频率惩罚",
-      "chat_setting_history_length": "携带的历史消息数",
+      "chat_setting_history_length": "携带的消息长度",
       "chat_setting_disabled_system_prompt": "开启系统词注入",
       "chat_other_reset_setting": "重置配置",
       "chat_other_clear_history": "清空对话",

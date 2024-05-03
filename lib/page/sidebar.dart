@@ -117,7 +117,7 @@ class _SidebarPageState extends State<SidebarPage> {
                             IconButton(
                                 onPressed: () {
                                   _sidebarPageController
-                                      .deleteHistory(index);
+                                      .deleteHistory(len - index - 1);
                                   _chatController.setHistory(
                                       _sidebarPageController
                                           .histories.last);

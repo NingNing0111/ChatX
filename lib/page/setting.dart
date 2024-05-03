@@ -32,6 +32,14 @@ class _SettingPageState extends State<SettingPage> {
     _keyInputController.text = _settingController.key.value;
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    // 配置信息存储到数据库中
+    _settingController.saveSettingInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -326,22 +334,25 @@ class _SettingPageState extends State<SettingPage> {
                         )
                       ],
                     ),
-                    Obx(() => Slider(
-                          value: _settingController.temperature.value,
-                          min: 0.0,
-                          max: 1.0,
-                          divisions: 10,
-                          label: _settingController.temperature.value
-                              .toStringAsFixed(1),
-                          activeColor: Colors.blue,
-                          // 设置活动部分的颜色
-                          inactiveColor: Colors.grey,
-                          // 设置非活动部分的颜色
-                          // 设置刻度为10，对应0.0到1.0的范围
-                          onChanged: (newValue) {
-                            _settingController.temperature.value = newValue;
-                          },
-                        )),
+                    Obx(() => SizedBox(
+                      width: 170,
+                      child: Slider(
+                            value: _settingController.temperature.value,
+                            min: 0.0,
+                            max: 1.0,
+                            divisions: 10,
+                            label: _settingController.temperature.value
+                                .toStringAsFixed(1),
+                            activeColor: Colors.blue,
+                            // 设置活动部分的颜色
+                            inactiveColor: Colors.grey,
+                            // 设置非活动部分的颜色
+                            // 设置刻度为10，对应0.0到1.0的范围
+                            onChanged: (newValue) {
+                              _settingController.temperature.value = newValue;
+                            },
+                          ),
+                    )),
                   ],
                 ),
                 Row(
@@ -361,22 +372,25 @@ class _SettingPageState extends State<SettingPage> {
                         )
                       ],
                     ),
-                    Obx(() => Slider(
-                          value: _settingController.topP.value,
-                          min: 0.0,
-                          max: 1.0,
-                          divisions: 10,
-                          label:
-                              _settingController.topP.value.toStringAsFixed(1),
-                          activeColor: Colors.blue,
-                          // 设置活动部分的颜色
-                          inactiveColor: Colors.grey,
-                          // 设置非活动部分的颜色
-                          // 设置刻度为10，对应0.0到1.0的范围
-                          onChanged: (newValue) {
-                            _settingController.topP.value = newValue;
-                          },
-                        )),
+                    Obx(() => SizedBox(
+                      width: 170,
+                      child: Slider(
+                            value: _settingController.topP.value,
+                            min: 0.0,
+                            max: 1.0,
+                            divisions: 10,
+                            label:
+                                _settingController.topP.value.toStringAsFixed(1),
+                            activeColor: Colors.blue,
+                            // 设置活动部分的颜色
+                            inactiveColor: Colors.grey,
+                            // 设置非活动部分的颜色
+                            // 设置刻度为10，对应0.0到1.0的范围
+                            onChanged: (newValue) {
+                              _settingController.topP.value = newValue;
+                            },
+                          ),
+                    )),
                   ],
                 ),
                 Row(
@@ -396,22 +410,25 @@ class _SettingPageState extends State<SettingPage> {
                         )
                       ],
                     ),
-                    Obx(() => Slider(
-                          value: _settingController.presencePenalty.value,
-                          min: -2.0,
-                          max: 2.0,
-                          divisions: 20,
-                          label: _settingController.presencePenalty.value
-                              .toStringAsFixed(1),
-                          activeColor: Colors.blue,
-                          // 设置活动部分的颜色
-                          inactiveColor: Colors.grey,
-                          // 设置非活动部分的颜色
-                          // 设置刻度为10，对应0.0到1.0的范围
-                          onChanged: (newValue) {
-                            _settingController.presencePenalty.value = newValue;
-                          },
-                        )),
+                    Obx(() => SizedBox(
+                      width: 170,
+                      child: Slider(
+                            value: _settingController.presencePenalty.value,
+                            min: -2.0,
+                            max: 2.0,
+                            divisions: 20,
+                            label: _settingController.presencePenalty.value
+                                .toStringAsFixed(1),
+                            activeColor: Colors.blue,
+                            // 设置活动部分的颜色
+                            inactiveColor: Colors.grey,
+                            // 设置非活动部分的颜色
+                            // 设置刻度为10，对应0.0到1.0的范围
+                            onChanged: (newValue) {
+                              _settingController.presencePenalty.value = newValue;
+                            },
+                          ),
+                    )),
                   ],
                 ),
                 Row(
@@ -431,23 +448,26 @@ class _SettingPageState extends State<SettingPage> {
                         )
                       ],
                     ),
-                    Obx(() => Slider(
-                          value: _settingController.frequencyPenalty.value,
-                          min: -2.0,
-                          max: 2.0,
-                          divisions: 20,
-                          label: _settingController.frequencyPenalty.value
-                              .toStringAsFixed(1),
-                          activeColor: Colors.blue,
-                          // 设置活动部分的颜色
-                          inactiveColor: Colors.grey,
-                          // 设置非活动部分的颜色
-                          // 设置刻度为10，对应0.0到1.0的范围
-                          onChanged: (newValue) {
-                            _settingController.frequencyPenalty.value =
-                                newValue;
-                          },
-                        )),
+                    Obx(() => SizedBox(
+                      width: 170,
+                      child: Slider(
+                            value: _settingController.frequencyPenalty.value,
+                            min: -2.0,
+                            max: 2.0,
+                            divisions: 20,
+                            label: _settingController.frequencyPenalty.value
+                                .toStringAsFixed(1),
+                            activeColor: Colors.blue,
+                            // 设置活动部分的颜色
+                            inactiveColor: Colors.grey,
+                            // 设置非活动部分的颜色
+                            // 设置刻度为10，对应0.0到1.0的范围
+                            onChanged: (newValue) {
+                              _settingController.frequencyPenalty.value =
+                                  newValue;
+                            },
+                          ),
+                    )),
                   ],
                 ),
                 Row(
@@ -467,24 +487,27 @@ class _SettingPageState extends State<SettingPage> {
                         )
                       ],
                     ),
-                    Obx(() => Slider(
-                          value:
-                              _settingController.historyLength.value.toDouble(),
-                          min: 0,
-                          max: 32,
-                          divisions: 32,
-                          label:
-                              _settingController.historyLength.value.toString(),
-                          activeColor: Colors.blue,
-                          // 设置活动部分的颜色
-                          inactiveColor: Colors.grey,
-                          // 设置非活动部分的颜色
-                          // 设置刻度为10，对应0.0到1.0的范围
-                          onChanged: (newValue) {
-                            _settingController.historyLength.value =
-                                newValue.toInt();
-                          },
-                        )),
+                    Obx(() => SizedBox(
+                      width: 170,
+                      child: Slider(
+                            value:
+                                _settingController.historyLength.value.toDouble(),
+                            min: 0,
+                            max: 32,
+                            divisions: 32,
+                            label:
+                                _settingController.historyLength.value.toString(),
+                            activeColor: Colors.blue,
+                            // 设置活动部分的颜色
+                            inactiveColor: Colors.grey,
+                            // 设置非活动部分的颜色
+                            // 设置刻度为10，对应0.0到1.0的范围
+                            onChanged: (newValue) {
+                              _settingController.historyLength.value =
+                                  newValue.toInt();
+                            },
+                          ),
+                    )),
                   ],
                 ),
                 Row(

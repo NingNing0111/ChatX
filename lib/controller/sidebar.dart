@@ -1,21 +1,27 @@
+import 'package:chat_all/db/message_database.dart';
 import 'package:chat_all/model/message.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
 class SidebarPageController extends GetxController {
 
-  final histories = <HistoryMessage>[].obs;
   final defaultOverview = "default_history_chat_overview".tr;
+  final histories = <HistoryMessage>[HistoryMessage(id: Uuid().v1(), title: "default_history_chat_overview".tr, messages: [], createTime: DateTime.now())].obs;
+
   final choice = 0.obs;
+
+  final db = MessageDatabase();
 
   @override
   void onInit() {
     super.onInit();
-
-    histories.add(
-        HistoryMessage(
-            id: const Uuid().v1(), title: defaultOverview, messages: [], createTime: DateTime.now())
-    );
+    var storeHistories = db.readAll();
+    histories.clear();
+    histories.addAll(storeHistories);
+    if(histories.isEmpty){
+      newHistory();
+    }
+    update();
   }
 
   void setChoice(int index){
@@ -25,6 +31,7 @@ class SidebarPageController extends GetxController {
 
   void addHistory(HistoryMessage historyMessage) {
     histories.add(historyMessage);
+    db.addHistoryMessage(historyMessage);
     update();
   }
 
@@ -41,21 +48,22 @@ class SidebarPageController extends GetxController {
     if (!hasHistory) {
       histories.add(historyMessage);
     }
+    db.updateHistoryMessage(historyMessage);
     update();
   }
 
   void deleteHistory(int index) {
+    db.deleteHistoryMessage(histories[index].id);
     histories.removeAt(index);
     if (histories.isEmpty) {
-      histories.add(HistoryMessage(
-          id: const Uuid().v1(), title: defaultOverview, messages: [], createTime: DateTime.now()));
+      newHistory();
     }
     update();
   }
 
   void newHistory() {
-
-    histories.add(HistoryMessage(
+    choice.value = 0;
+    addHistory(HistoryMessage(
         id: const Uuid().v1(), title: defaultOverview, messages: [], createTime: DateTime.now()));
     update();
   }
@@ -64,7 +72,18 @@ class SidebarPageController extends GetxController {
     histories.clear();
     newHistory();
     choice.value = 0;
+    db.clearHistoryMessage();
     update();
+  }
+
+  @override
+  void onClose() {
+    db.saveHistory(histories);
+    super.onClose();
+  }
+
+  void saveAll() {
+    db.saveHistory(histories);
   }
 
 }

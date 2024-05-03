@@ -72,16 +72,16 @@ class _ChatPageState extends State<ChatPage> {
         ),
         drawer: const SidebarPage(),
         body: GetBuilder<ChatPageController>(
-          builder: (context) => _chatController.historyMessages.messages.isEmpty
+          builder: (context) => _chatController.currHistoryMessage.messages.isEmpty
               ? ChatHome(
                   sendMessage: sendMessage,
                 )
               : ListView.builder(
                   controller: _scrollController,
-                  itemCount: _chatController.historyMessages.messages.length,
+                  itemCount: _chatController.currHistoryMessage.messages.length,
                   itemBuilder: (context, index) {
                     final currMessage =
-                        _chatController.historyMessages.messages[index];
+                        _chatController.currHistoryMessage.messages[index];
                     return Column(
                       crossAxisAlignment:
                           OpenAIChatMessageRole.user == currMessage.role
@@ -183,20 +183,20 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendMessage(String prompt) async {
-    if (_chatController.historyMessages.messages.isEmpty) {
-      _chatController.historyMessages.title = prompt;
-      _sidebarController.updateHistory(_chatController.historyMessages);
+    if (_chatController.currHistoryMessage.messages.isEmpty) {
+      _chatController.currHistoryMessage.title = prompt;
+      _sidebarController.updateHistory(_chatController.currHistoryMessage);
     }
 
     _chatController.addMessage(Message(
         content: prompt,
         role: OpenAIChatMessageRole.user,
-        historyId: _chatController.historyMessages.id));
+        historyId: _chatController.currHistoryMessage.id));
 
     _chatController.addMessage(Message(
         content: "",
         role: OpenAIChatMessageRole.assistant,
-        historyId: _chatController.historyMessages.id));
+        historyId: _chatController.currHistoryMessage.id));
     _chatService.init(
         api: _settingController.api.value, key: _settingController.key.value);
     // 获取对话Message
@@ -209,11 +209,11 @@ class _ChatPageState extends State<ChatPage> {
         presencePenalty: _settingController.presencePenalty.value,
         frequencyPenalty: _settingController.frequencyPenalty.value,
         onDone: () {
-          print("完成");
+          _sidebarController.saveAll();
         },
         resultBack: (event) {
           _chatController.updateMessageContent(
-              _chatController.historyMessages.messages.length - 1, event);
+              _chatController.currHistoryMessage.messages.length - 1, event);
           updateToBottom();
         }); //
   }
@@ -228,7 +228,7 @@ class _ChatPageState extends State<ChatPage> {
 
   List<Message> getChatMessageByLen() {
     // message 列表
-    final chatMessage = _chatController.historyMessages.messages;
+    final chatMessage = _chatController.currHistoryMessage.messages;
     // 长度、最大长度
     final len = chatMessage.length;
     final maxLen = _settingController.historyLength.value;
