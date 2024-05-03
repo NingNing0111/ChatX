@@ -10,7 +10,7 @@ class OpenAIService {
 
   void init({required String api, required String key}) {
     OpenAI.apiKey = key;
-    OpenAI.baseUrl = api;// 给我一张张德宁的照片
+    OpenAI.baseUrl = api;
   }
 
   // 综合绘图+对话
@@ -38,7 +38,7 @@ class OpenAIService {
         prompt = requestMessages[len].content;
         break;
       }
-      len--; // 画一张张德宁的图片
+      len--;
     }
     // 判断结果
     bool judgeResult = await judgeDraw(model, prompt);
@@ -136,7 +136,7 @@ class OpenAIService {
         completer.complete(true);
         assistantMessage = "";
       }
-    }, onError: (err) { // 我需要一张小狗狗照片
+    }, onError: (err) {
       resultBack(err.toString());
       if (!completer.isCompleted) {
         completer.complete(true);
@@ -157,7 +157,7 @@ class OpenAIService {
       }
       return imageResponse.toString();
     } catch (e) {
-      return e.toString(); // 给我一张小狗狗的照片
+      return e.toString();
     }
   }
 
