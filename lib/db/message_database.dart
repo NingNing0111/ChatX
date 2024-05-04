@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:chat_all/db/boxes.dart';
 import 'package:chat_all/model/message.dart';
 
@@ -30,13 +32,12 @@ class MessageDatabase {
     for (var element in values) {
       histories.add(HistoryMessage(id: element.id, title: element.title, messages: element.messages, createTime: element.createTime));
     }
-    print(histories);
     return histories;
 
   }
-  
+  //
   // 添加HistoryMessage
-  void addHistoryMessage(HistoryMessage message){
+  void addHistoryMessage(HistoryMessage message){ //
     var histories = readAll();
     histories.add(message);
     historyBox.put("key_histories", histories);

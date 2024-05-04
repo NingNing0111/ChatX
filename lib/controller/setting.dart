@@ -16,12 +16,13 @@ class SettingPageController  extends  GetxController {
   final key = "".obs;
   // 对话配置
   final chatModel = "gpt-3.5-turbo".obs;
-  final drawModel = "dall-e-2".obs;
+  final imageModel = "dall-e-2".obs;
   final temperature = 0.5.obs;
   final presencePenalty = 0.0.obs;
   final frequencyPenalty = 0.0.obs;
   final historyLength = 16.obs;
-  final disabledSystemPrompt = true.obs;
+  final enabledSystemPrompt = true.obs;
+  final enabledImageChat = false.obs;
   final topP = 0.5.obs;
 
   final db = SettingDatabase();
@@ -33,11 +34,13 @@ class SettingPageController  extends  GetxController {
     api.value = db.getApi()??api.value;
     key.value = db.getKey()??key.value;
     chatModel.value = db.getChatModel()??chatModel.value;
+    imageModel.value = db.getImageModel()??imageModel.value;
     temperature.value = db.getTemperature()??temperature.value;
     presencePenalty.value = db.getPresencePenalty()??presencePenalty.value;
     frequencyPenalty.value = db.getFrequencyPenalty()??frequencyPenalty.value;
     historyLength.value = db.getHistoryLength()??historyLength.value;
-    disabledSystemPrompt.value = db.getDisabledSystemPrompt()??disabledSystemPrompt.value;
+    enabledSystemPrompt.value = db.getDisabledSystemPrompt()??enabledSystemPrompt.value;
+    enabledImageChat.value = db.getEnabledImageChat()??enabledImageChat.value;
     topP.value = db.getTopP()??topP.value;
     setLanguage(language.value!);
     super.onInit();
@@ -54,7 +57,8 @@ class SettingPageController  extends  GetxController {
     presencePenalty.value = 0.0;
     frequencyPenalty.value = 0.0;
     historyLength.value = 16;
-    disabledSystemPrompt(true);
+    enabledSystemPrompt(true);
+    enabledImageChat(false);
     topP.value = 0.5;
     update();
   }
@@ -71,11 +75,13 @@ class SettingPageController  extends  GetxController {
     db.saveApi(api.value);
     db.saveKey(key.value);
     db.saveChatModel(chatModel.value);
+    db.saveImageModel(imageModel.value);
     db.saveTemperature(temperature.value);
     db.savePresencePenalty(presencePenalty.value);
     db.saveFrequencyPenalty(frequencyPenalty.value);
     db.saveHistoryLength(historyLength.value);
-    db.saveDisabledSystemPrompt(disabledSystemPrompt.value);
+    db.saveDisabledSystemPrompt(enabledSystemPrompt.value);
+    db.saveEnabledImageChat(enabledImageChat.value);
     db.saveTopP(topP.value);
     log("配置信息存储完成");
   }

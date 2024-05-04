@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_all/db/message_database.dart';
 import 'package:chat_all/model/message.dart';
 import 'package:get/get.dart';
@@ -77,11 +79,12 @@ class SidebarPageController extends GetxController {
 
   @override
   void onClose() {
-    db.saveHistory(histories);
+    saveAll();
     super.onClose();
   }
 
   void saveAll() {
+    log("聊天数据保存成功");
     db.saveHistory(histories);
   }
 

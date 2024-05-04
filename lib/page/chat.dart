@@ -14,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-
-
 import '../controller/sidebar.dart';
 
 class ChatPage extends StatefulWidget {
@@ -32,12 +30,20 @@ class _ChatPageState extends State<ChatPage> {
   final _chatService = OpenAIService();
   final _textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final isWaiting = false.obs; // 给我一张小狗狗的照片
+  final isWaiting = false.obs;
 
   @override
   void initState() {
     super.initState();
   }
+
+  @override
+  void dispose() {
+    _sidebarController.saveAll();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +148,7 @@ class _ChatPageState extends State<ChatPage> {
                                 child: currMessage.content.isEmpty
                                     ? const CircularProgressIndicator(
                                         backgroundColor: Colors.blue,
+
                                       )
                                     : MdCodeMath(currMessage.content),
                               ),
@@ -210,13 +217,13 @@ class _ChatPageState extends State<ChatPage> {
 
     // 获取对话Message
     final chatMessage = getChatMessageByLen();
-    log("$chatMessage------**********");
 
     // 发起对话
     await _chatService.chat(
-      drawModel: _settingController.drawModel.value,
+        imageModel: _settingController.imageModel.value,
         messages: chatMessage,
-        model: _settingController.chatModel.value,
+        isImageChat: _settingController.enabledImageChat.value,
+        chatModel: _settingController.chatModel.value,
         temperature: _settingController.temperature.value,
         topP: _settingController.topP.value,
         presencePenalty: _settingController.presencePenalty.value,
@@ -228,7 +235,8 @@ class _ChatPageState extends State<ChatPage> {
           _chatController.updateMessageContent(
               _chatController.currHistoryMessage.messages.length - 1, event);
           updateToBottom();
-        }); //
+        });
+    _sidebarController.saveAll();
   }
 
   void updateToBottom() {

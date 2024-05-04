@@ -75,6 +75,13 @@ class SettingDatabase {
     return settingBox.get("key_setting_chatModel");
   }
 
+  void saveImageModel(String imageModel){
+    settingBox.put("key_setting_imageModel", imageModel);
+  }
+  String? getImageModel(){
+    return settingBox.get("key_setting_imageModel");
+  }
+
   void saveTemperature(double temperature){
     settingBox.put("key_setting_temperature", temperature);
   }
@@ -113,6 +120,14 @@ class SettingDatabase {
 
   bool? getDisabledSystemPrompt() {
     return settingBox.get("key_setting_disabledSystemPrompt");
+  }
+
+  void saveEnabledImageChat(bool enabledImageChat){
+    settingBox.put("key_setting_enabledImageChat", enabledImageChat);
+  }
+
+  bool? getEnabledImageChat() {
+    return settingBox.get("key_setting_enabledImageChat");
   }
 
   void saveTopP(double topP){

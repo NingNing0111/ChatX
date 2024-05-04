@@ -20,9 +20,15 @@ class ChatPageController extends GetxController {
     currHistoryMessage = Get.find<SidebarPageController>().histories.last;
     update();
   }
-
   void setHistory(HistoryMessage history) {
     currHistoryMessage = history;
     update();
+  }
+
+  @override
+  void onClose() {
+    Get.find<SidebarPageController>().saveAll();
+    super.onClose();
+
   }
 }

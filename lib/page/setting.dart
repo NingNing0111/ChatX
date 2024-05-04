@@ -173,13 +173,9 @@ class _SettingPageState extends State<SettingPage> {
                   children: [
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          AssetsManage.apiIcon,
-                          width: 30,
-                          height: 30,
-                          color: AdaptiveTheme.of(context).mode.isLight
-                              ? Colors.black
-                              : Colors.white,
+                        const Icon(
+                          Icons.api,
+                          size: 30,
                         ),
                         const SizedBox(
                           width: 10,
@@ -269,7 +265,7 @@ class _SettingPageState extends State<SettingPage> {
             const Divider(),
 
             ///
-            /// 对话设置：模型、随机性、核采样、话题新鲜度、频率惩罚、是否注入系统提示词、附带的历史消息总数
+            /// 对话设置：对话模型、图片模型、随机性、核采样、话题新鲜度、频率惩罚、是否注入系统提示词、附带的历史消息总数
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -282,19 +278,11 @@ class _SettingPageState extends State<SettingPage> {
                   children: [
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          AssetsManage.modelIcon,
-                          width: 30,
-                          height: 30,
-                          color: AdaptiveTheme.of(context).mode.isLight
-                              ? Colors.black
-                              : Colors.white,
-                        ),
                         const SizedBox(
-                          width: 10,
+                          width: 40,
                         ),
                         Text(
-                          "chat_setting_model".tr,
+                          "chat_setting_chat_model".tr,
                           style: AdaptiveTheme.of(context)
                               .theme
                               .textTheme
@@ -314,6 +302,42 @@ class _SettingPageState extends State<SettingPage> {
                         ],
                         onChanged: (String? value) {
                           _settingController.chatModel.value = value!;
+                        })
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        Text(
+                          "chat_setting_image_model".tr,
+                          style: AdaptiveTheme.of(context)
+                              .theme
+                              .textTheme
+                              .titleMedium,
+                        )
+                      ],
+                    ),
+                    DropdownButton(
+                        padding: const EdgeInsets.all(5),
+                        borderRadius: BorderRadius.circular(10),
+                        value: "dall-e-2",
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: "dall-e-2",
+                            child: Text("dall-e-2"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "dall-e-3",
+                            child: Text("dall-e-3"),
+                          )
+                        ],
+                        onChanged: (String? value) {
+                          _settingController.imageModel.value = value!;
                         })
                   ],
                 ),
@@ -520,7 +544,7 @@ class _SettingPageState extends State<SettingPage> {
                           width: 40,
                         ),
                         Text(
-                          "chat_setting_disabled_system_prompt".tr,
+                          "chat_setting_enabled_system_prompt".tr,
                           style: AdaptiveTheme.of(context)
                               .theme
                               .textTheme
@@ -531,10 +555,37 @@ class _SettingPageState extends State<SettingPage> {
                     Obx(() => Switch(
                         activeColor: Colors.blue,
                         inactiveThumbColor: Colors.grey,
-                        value: _settingController.disabledSystemPrompt.value,
+                        value: _settingController.enabledSystemPrompt.value,
                         onChanged: (value) {
-                          _settingController.disabledSystemPrompt.value =
-                              !_settingController.disabledSystemPrompt.value;
+                          _settingController.enabledSystemPrompt.value =
+                              !_settingController.enabledSystemPrompt.value;
+                        }))
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        Text(
+                          "chat_setting_enabled_image_chat".tr,
+                          style: AdaptiveTheme.of(context)
+                              .theme
+                              .textTheme
+                              .titleMedium,
+                        )
+                      ],
+                    ),
+                    Obx(() => Switch(
+                        activeColor: Colors.blue,
+                        inactiveThumbColor: Colors.grey,
+                        value: _settingController.enabledImageChat.value,
+                        onChanged: (value) {
+                          _settingController.enabledImageChat.value =
+                              !_settingController.enabledImageChat.value;
                         }))
                   ],
                 )
