@@ -60,14 +60,14 @@ class OpenAIService {
 
       if (judgeResult) {
         resultBack("图片生成中...");
-        var imageBase64 = await generateImage(imageModel, prompt);
-        if (imageBase64.startsWith("ERR")) {
-          resultBack(imageBase64);
+        var image = await generateImage(imageModel, prompt);
+        if (image.startsWith("ERR")) {
+          resultBack(image);
           return;
         }
-        log(imageBase64);
-        String response =
-            "### 图片生成成功\n\n![$prompt](data:image/png;base64,$imageBase64)\n";
+        log(image);
+        // String response = "### 图片生成成功\n\n![$prompt](data:image/png;base64,$image)\n";
+        String response = "### 图片生成成功\n\n![$prompt]($image)\n\n- 图片地址:[$image]($image)";
         resultBack(response);
         // var promptTemplate =//
         //     """
@@ -176,11 +176,11 @@ class OpenAIService {
           model: model,
           n: 1,
           size: OpenAIImageSize.size1024,
-          responseFormat: OpenAIImageResponseFormat.b64Json);
+          responseFormat: OpenAIImageResponseFormat.url);
       log(imageResponse.toString());
-      var imageBase64 = imageResponse.data.first.b64Json;
-      if (imageBase64 != null) {
-        return imageBase64;
+      var image = imageResponse.data.first.url;
+      if (image != null) {
+        return image;
       }
       return "ERR:${imageResponse.toString()}";
     } catch (e) {

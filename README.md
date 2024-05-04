@@ -5,7 +5,7 @@
 ## 特性
 
 - 流式输出响应，体验极佳；
-- 支持Markdown渲染、代码高亮、Latex渲染；
+- 支持 Markdown 渲染、代码高亮、Latex 渲染；
 - 支持一键复制代码；
 - 支持对话模型微调；
 - 国际化，支持中英文；
@@ -13,24 +13,12 @@
 
 ## 效果图
 
-### 设置页面
-
-![img.png](doc/images/1.png)
-
-### 对话页面
-
-![img.png](doc/images/2.png)
-
-### 对话历史记录
-
-![img.png](doc/images/3.png)
-
-![img.png](doc/images/4.png)
-
-### 渲染展示
-
-![img.png](doc/images/5.png)
-
-![img.png](doc/images/6.png)
-
-
+|    功能    |              白天模式               |              黑夜模式              |
+| :--------: | :---------------------------------: | :--------------------------------: |
+|    对话    |   ![](doc/images/chat_light.jpg)    |   ![](doc/images/chat_dark.jpg)    |
+|  图片生成  | ![](doc/images/imageChat_light.jpg) | ![](doc/images/imageChat_dark.jpg) |
+|  代码高亮  | ![](doc/images/highlight_light.jpg) | ![](doc/images/highlight_dark.jpg) |
+| Latex 渲染 |   ![](doc/images/latex_light.jpg)   |   ![](doc/images/latex_dark.jpg)   |
+|  设置页面  |  ![](doc/images/setting_light.jpg)  |  ![](doc/images/setting_dark.jpg)  |
+|   国际化   |  ![](doc/images/setting_light.jpg)  |  ![](doc/images/setting_dark.jpg)  |
+|    其它    |  ![](doc/images/sidebar_light.jpg)  |  ![](doc/images/sidebar_dark.jpg)  |

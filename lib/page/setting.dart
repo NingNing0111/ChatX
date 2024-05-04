@@ -322,10 +322,10 @@ class _SettingPageState extends State<SettingPage> {
                         )
                       ],
                     ),
-                    DropdownButton(
+                    GetBuilder<SettingPageController>(builder: (context)=>DropdownButton(
                         padding: const EdgeInsets.all(5),
                         borderRadius: BorderRadius.circular(10),
-                        value: "dall-e-2",
+                        value: _settingController.imageModel.value,
                         items: const [
                           DropdownMenuItem<String>(
                             value: "dall-e-2",
@@ -338,7 +338,8 @@ class _SettingPageState extends State<SettingPage> {
                         ],
                         onChanged: (String? value) {
                           _settingController.imageModel.value = value!;
-                        })
+                          _settingController.update();
+                        }))
                   ],
                 ),
                 Row(
