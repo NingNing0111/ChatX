@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             initialRoute: "/",
             getPages: routers,
             unknownRoute: routers.last,
-            defaultTransition: Transition.rightToLeft,
+            defaultTransition: Transition.fadeIn,
             home: const ChatPage()));
   }
 }

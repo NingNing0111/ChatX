@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:chat_all/component/chat_home.dart';
@@ -42,8 +43,6 @@ class _ChatPageState extends State<ChatPage> {
     _sidebarController.saveAll();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +147,6 @@ class _ChatPageState extends State<ChatPage> {
                                 child: currMessage.content.isEmpty
                                     ? const CircularProgressIndicator(
                                         backgroundColor: Colors.blue,
-
                                       )
                                     : MdCodeMath(currMessage.content),
                               ),
@@ -198,10 +196,14 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> sendMessage(String prompt) async {
-    if (_chatController.currHistoryMessage.messages.isEmpty) {
+    if (_chatController.currHistoryMessage.messages.isEmpty ||
+        (_chatController.currHistoryMessage.messages.length == 1 &&
+            _chatController.currHistoryMessage.messages.first.role ==
+                OpenAIChatMessageRole.system)) {
       _chatController.currHistoryMessage.title = prompt;
       _sidebarController.updateHistory(_chatController.currHistoryMessage);
     }
+
     _chatController.addMessage(Message(
         content: prompt,
         role: OpenAIChatMessageRole.user,
@@ -247,16 +249,37 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  // 限制消息列表的最大长度
+  // 构建请求对话消息列表
+  // 当关闭提示词注入时，消息列表头部不存在system
+  // 开启时，消息列表头部始终有system
   List<Message> getChatMessageByLen() {
-    // message 列表
-    final chatMessage = _chatController.currHistoryMessage.messages;
+    final originMessages = _chatController.currHistoryMessage.messages;
+    // 拷贝一份
+    var chatMessage = List.of(originMessages);
+    // 截取请求消息
     // 长度、最大长度
     final len = chatMessage.length;
     final maxLen = _settingController.historyLength.value;
-    if (len > maxLen) {
-      return chatMessage.sublist(len - maxLen);
+    // 普通对话时，消息列表中的头部不是system
+    if (originMessages.first.role != OpenAIChatMessageRole.system) {
+      if (len > maxLen) {
+        chatMessage = chatMessage.sublist(len - maxLen);
+      }
+    } else {
+      // 获取系统提示词
+      Message system = originMessages.first;
+      if (len > maxLen) {
+        chatMessage = chatMessage.sublist(len - maxLen);
+      }
+      if (chatMessage.first.role == OpenAIChatMessageRole.system) {
+        chatMessage.removeAt(0);
+      }
+      // 根据是否开启系统词注入进行注入
+      if (_settingController.enabledSystemPrompt.value) {
+        chatMessage.insert(0, system);
+      }
     }
+
     return chatMessage;
   }
 }

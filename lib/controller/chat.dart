@@ -5,7 +5,6 @@ import '../model/message.dart';
 
 class ChatPageController extends GetxController {
   HistoryMessage currHistoryMessage = Get.find<SidebarPageController>().histories.last;
-
   void updateMessageContent(int index, String content) {
     currHistoryMessage.messages[index].content = content;
     update();
@@ -29,6 +28,5 @@ class ChatPageController extends GetxController {
   void onClose() {
     Get.find<SidebarPageController>().saveAll();
     super.onClose();
-
   }
 }

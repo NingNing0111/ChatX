@@ -33,19 +33,30 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
+  # 状态管理
   get: ^4.6.6
+  # Markdown渲染相关组件
   markdown_widget: ^2.3.2+6
   flutter_math_fork: ^0.7.2
-  dio: ^5.4.3+1
-  adaptive_theme: ^3.6.0
-  dart_openai: ^5.1.0
   markdown: any
   flutter_highlight: any
+  # 网络请求
+  dio: ^5.4.3+1
+  # 主题管理
+  adaptive_theme: ^3.6.0
+  # OpenAI SDK
+  dart_openai: ^5.1.0
+  # SVG图片渲染
   flutter_svg: ^2.0.10+1
+  # UUID
   uuid: ^4.4.0
+  # 时间格式转换
   intl: ^0.19.0
+  # 持久化存储
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  # 动态emoji表情
+  animated_emoji: ^3.1.0
 
 dev_dependencies:
   flutter_test:

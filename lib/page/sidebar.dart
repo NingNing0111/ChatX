@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:chat_all/component/role_home.dart';
 import 'package:chat_all/controller/chat.dart';
 import 'package:chat_all/controller/sidebar.dart';
 import 'package:chat_all/service/assets.dart';
@@ -29,9 +30,8 @@ class _SidebarPageState extends State<SidebarPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () {
-                _sidebarPageController.newHistory();
-                _chatController.reloadHistory();
+              onTap: (){
+                _createNewChat();
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -80,17 +80,16 @@ class _SidebarPageState extends State<SidebarPage> {
                   final currHistory =
                       _sidebarPageController.histories[len - index - 1];
                   return Container(
-                    margin:
-                    const EdgeInsets.only(left: 10, right: 10, top: 10),
+                    margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                     padding: const EdgeInsets.all(5),
                     height: 100,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: _sidebarPageController.choice.value == index
                             ? Border.all(
-                            color: const Color(0xff4691a8), width: 2)
+                                color: const Color(0xff4691a8), width: 2)
                             : Border.all(
-                            color: const Color(0x304691a8), width: 1)),
+                                color: const Color(0x304691a8), width: 1)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -119,8 +118,7 @@ class _SidebarPageState extends State<SidebarPage> {
                                   _sidebarPageController
                                       .deleteHistory(len - index - 1);
                                   _chatController.setHistory(
-                                      _sidebarPageController
-                                          .histories.last);
+                                      _sidebarPageController.histories.last);
                                   _sidebarPageController.setChoice(0);
                                 },
                                 icon: const Icon(
@@ -179,5 +177,67 @@ class _SidebarPageState extends State<SidebarPage> {
             )
           ]),
     );
+  }
+
+  void _createNewChat() {
+    Get.defaultDialog(
+        title: "选择角色",
+        titlePadding: const EdgeInsets.all(5),
+        content: Column(
+          children: [
+            Text(
+              "是否选择一个角色进行对话",
+              style: AdaptiveTheme.of(context)
+                  .theme
+                  .textTheme
+                  .titleLarge,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      _toChat();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.cyan,
+                          borderRadius: BorderRadius.circular(15)
+                      ),
+                      child: const Text(
+                          "直接开始",
+                          style: TextStyle(fontSize: 16,color: Colors.white)
+                      ),
+                    )),
+                TextButton(
+                    onPressed: () {
+        _chooseRole();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: const Color(0xff4691a8),
+                          borderRadius: BorderRadius.circular(15)),
+                      padding: const EdgeInsets.all(5),
+                      child: const Text(
+                        "选择角色",
+                        style: TextStyle(
+                            fontSize: 16, color: Colors.white),
+                      ),
+                    ))
+              ],
+            )
+          ],
+        ));
+  }
+
+  void _toChat() {
+    _sidebarPageController.newHistory();
+    _chatController.reloadHistory();
+    Get.back();
+  }
+
+  void _chooseRole(){
+    Get.toNamed("/roles");
   }
 }

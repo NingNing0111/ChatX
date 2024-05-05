@@ -10,8 +10,8 @@ class OpenAIService {
   void init({required String api, required String key}) {
     OpenAI.apiKey = key;
     OpenAI.baseUrl = api;
-    OpenAI.showLogs = true;
-    OpenAI.showResponsesLogs = true;
+    // OpenAI.showLogs = true;
+    // OpenAI.showResponsesLogs = true;
     OpenAI.requestsTimeOut = const Duration(seconds: 60);
   }
 
@@ -66,38 +66,10 @@ class OpenAIService {
           return;
         }
         log(image);
-        // String response = "### 图片生成成功\n\n![$prompt](data:image/png;base64,$image)\n";
+
         String response = "### 图片生成成功\n\n![$prompt]($image)\n\n- 图片地址:[$image]($image)";
         resultBack(response);
-        // var promptTemplate =//
-        //     """
-        //     我已经为你提供了图片信息：
-        //     ---
-        //     图片描述：$prompt
-        //     图片地址：$imageUrl
-        //     ---
-        //     你可以使用MarkDown格式回复图片的URL，例如:![]($imageUrl)。
-        //     注意，你的回复内容需要表现得天生就知道这些图片信息一样并且你需要保证图片能够根据Markdown语法正常渲染，例如你在给出图片时，需要换行。
-        //     以下是你回复时的参考案例(图片描述：请给我一张小狗狗的图片，图片地址：https://img.example.com/dog.png)：
-        //     -----
-        //     小狗狗是人类的好朋友，并且非常可爱，我现在为你提供小狗狗的图片：
-        //
-        //     ![请给我一张小狗狗的图片](https://img.example.com/dog.png)
-        //     -----
-        //     你在给出图片前，需要对图片描述进行一些扩展说明并且一定不要把图片地址弄错，必须提供的地址保持一致。
-        //     """;
-        // print("图片地址：$imageUrl");
-        // requestMessages.insert(requestMessages.length-2,Message(content: promptTemplate, role: OpenAIChatMessageRole.system, historyId: ""));
-        //
-        // await streamChat(
-        //     messages: requestMessages,
-        //     model: model,
-        //     temperature: temperature,
-        //     topP: topP,
-        //     presencePenalty: presencePenalty,
-        //     frequencyPenalty: frequencyPenalty,
-        //     onDone: onDone,
-        //     resultBack: resultBack);
+
       } else {
         await streamChat(
             messages: requestMessages,
@@ -124,6 +96,7 @@ class OpenAIService {
       Function? onError,
       required ValueChanged resultBack}) async {
     var chatMessages = transformMessage(messages);
+    log("请求列表：${chatMessages.toString()}");
     try {
       final chatStream = OpenAI.instance.chat.createStream(
           model: model,

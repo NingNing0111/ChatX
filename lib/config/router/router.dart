@@ -1,5 +1,7 @@
+import 'package:chat_all/component/role_home.dart';
 import 'package:chat_all/controller/setting.dart';
 import 'package:chat_all/page/chat.dart';
+import 'package:chat_all/page/roles.dart';
 import 'package:chat_all/page/setting.dart';
 import 'package:chat_all/page/unknow.dart';
 import 'package:get/get.dart';
@@ -12,5 +14,6 @@ final routers = [
       name: "/setting",
       page: () => const SettingPage(),
       binding: SettingControllerBinding()),
+  GetPage(name: "/roles", page: ()=>const RolesPage()),
   GetPage(name: "/unknown", page: () => const UnknownPage())
 ];
